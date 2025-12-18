@@ -4,25 +4,21 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: windows-latest
 
     steps:
-      # 1️⃣ Checkout repository
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      # 2️⃣ Install Power BI PowerShell module
       - name: Install Power BI PowerShell Module
         shell: pwsh
         run: |
-          Install-Module MicrosoftPowerBIMgmt -Scope CurrentUser -Force -AllowClobber
+          Install-Module -Name MicrosoftPowerBIMgmt -Scope CurrentUser -Force -AllowClobber
 
-      # 3️⃣ Login to Power BI using Service Principal
-      - name: Login to Power BI
+      - name: Login and Publish PBIX
         shell: pwsh
         run: |
           Import-Module MicrosoftPowerBIMgmt
@@ -38,10 +34,6 @@ jobs:
             -Tenant "${{ secrets.PBI_TENANT_ID }}" `
             -Credential $credential
 
-      # 4️⃣ Publish PBIX to Power BI Workspace
-      - name: Publish PBIX
-        shell: pwsh
-        run: |
           New-PowerBIReport `
             -Path "./SalesReport2.pbix" `
             -WorkspaceId "${{ secrets.PBI_WORKSPACE_ID }}" `

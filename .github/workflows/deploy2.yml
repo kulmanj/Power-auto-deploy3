@@ -35,6 +35,6 @@ jobs:
             -Credential $credential
 
           New-PowerBIReport `
-            -Path "./SalesReport2.pbix" `
+            -Path "SalesReport2.pbix" `
             -WorkspaceId "${{ secrets.PBI_WORKSPACE_ID }}" `
             -ConflictAction CreateOrOverwrite
